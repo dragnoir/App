@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
+import {View} from 'react-native';
 import Icon from '@components/Icon';
 import * as Expensicons from '@components/Icon/Expensicons';
 import PressableWithoutFeedback from '@components/Pressable/PressableWithoutFeedback';
@@ -36,29 +37,31 @@ function EmojiPickerButton(props) {
     useEffect(() => EmojiPickerAction.resetEmojiPopoverAnchor, []);
 
     return (
-        <Tooltip text={props.translate('reportActionCompose.emoji')}>
-            <PressableWithoutFeedback
-                ref={emojiPopoverAnchor}
-                style={({hovered, pressed}) => [styles.chatItemEmojiButton, StyleUtils.getButtonBackgroundColorStyle(getButtonState(hovered, pressed))]}
-                disabled={props.isDisabled}
-                onPress={() => {
-                    if (!EmojiPickerAction.emojiPickerRef.current.isEmojiPickerVisible) {
-                        EmojiPickerAction.showEmojiPicker(props.onModalHide, props.onEmojiSelected, emojiPopoverAnchor.current, undefined, () => {}, props.emojiPickerID);
-                    } else {
-                        EmojiPickerAction.emojiPickerRef.current.hideEmojiPicker();
-                    }
-                }}
-                id={props.id}
-                accessibilityLabel={props.translate('reportActionCompose.emoji')}
-            >
-                {({hovered, pressed}) => (
-                    <Icon
-                        src={Expensicons.Emoji}
-                        fill={StyleUtils.getIconFillColor(getButtonState(hovered, pressed))}
-                    />
-                )}
-            </PressableWithoutFeedback>
-        </Tooltip>
+        <View ref={emojiPopoverAnchor}>
+            <Tooltip text={props.translate('reportActionCompose.emoji')}>
+                <PressableWithoutFeedback
+                    
+                    style={({hovered, pressed}) => [styles.chatItemEmojiButton, StyleUtils.getButtonBackgroundColorStyle(getButtonState(hovered, pressed))]}
+                    disabled={props.isDisabled}
+                    onPress={() => {
+                        if (!EmojiPickerAction.emojiPickerRef.current.isEmojiPickerVisible) {
+                            EmojiPickerAction.showEmojiPicker(props.onModalHide, props.onEmojiSelected, emojiPopoverAnchor.current, undefined, () => {}, props.emojiPickerID);
+                        } else {
+                            EmojiPickerAction.emojiPickerRef.current.hideEmojiPicker();
+                        }
+                    }}
+                    id={props.id}
+                    accessibilityLabel={props.translate('reportActionCompose.emoji')}
+                >
+                    {({hovered, pressed}) => (
+                        <Icon
+                            src={Expensicons.Emoji}
+                            fill={StyleUtils.getIconFillColor(getButtonState(hovered, pressed))}
+                        />
+                    )}
+                </PressableWithoutFeedback>
+            </Tooltip>
+        </View>
     );
 }
 
