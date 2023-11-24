@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {Dimensions} from 'react-native';
@@ -35,6 +36,9 @@ const EmojiPicker = forwardRef((props, ref) => {
     const emojiSearchInput = useRef();
     const {isSmallScreenWidth, windowHeight} = useWindowDimensions();
 
+    // Satet for emojiPopoverAnchor reference
+    const [emojiPopoverAnchorRef, setEmojiPopoverAnchorRef] = useState();
+
     /**
      * Show the emoji picker menu.
      *
@@ -49,6 +53,9 @@ const EmojiPicker = forwardRef((props, ref) => {
         onModalHide.current = onModalHideValue;
         onEmojiSelected.current = onEmojiSelectedValue;
         emojiPopoverAnchor.current = emojiPopoverAnchorValue;
+
+        setEmojiPopoverAnchorRef(emojiPopoverAnchorValue);
+
         if (emojiPopoverAnchor.current && emojiPopoverAnchor.current.blur) {
             // Drop focus to avoid blue focus ring.
             emojiPopoverAnchor.current.blur();
@@ -130,7 +137,8 @@ const EmojiPicker = forwardRef((props, ref) => {
                 }
                 return;
             }
-            calculateAnchorPosition(emojiPopoverAnchor.current, emojiPopoverAnchorOrigin).then((value) => {
+            console.log('emojiPopoverAnchorRef: ', emojiPopoverAnchorRef);  
+            calculateAnchorPosition(emojiPopoverAnchorRef, emojiPopoverAnchorOrigin).then((value) => {
                 setEmojiPopoverAnchorPosition(value);
             });
         });
