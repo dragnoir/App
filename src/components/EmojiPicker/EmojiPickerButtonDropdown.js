@@ -43,34 +43,36 @@ function EmojiPickerButtonDropdown(props) {
     };
 
     return (
-        <Tooltip text={props.translate('reportActionCompose.emoji')}>
-            <PressableWithoutFeedback
-                ref={emojiPopoverAnchor}
-                style={styles.emojiPickerButtonDropdown}
-                disabled={props.isDisabled}
-                onPress={onPress}
-                id="emojiDropdownButton"
-                accessibilityLabel="statusEmoji"
-                role={CONST.ACCESSIBILITY_ROLE.BUTTON}
-            >
-                {({hovered, pressed}) => (
-                    <View style={styles.emojiPickerButtonDropdownContainer}>
-                        <Text
-                            style={styles.emojiPickerButtonDropdownIcon}
-                            numberOfLines={1}
-                        >
-                            {props.value}
-                        </Text>
-                        <View style={[styles.popoverMenuIcon, styles.pointerEventsAuto, props.disabled && styles.cursorDisabled, styles.rotate90]}>
-                            <Icon
-                                src={Expensicons.ArrowRight}
-                                fill={StyleUtils.getIconFillColor(getButtonState(hovered, pressed))}
-                            />
+        <View ref={emojiPopoverAnchor}>
+            <Tooltip text={props.translate('reportActionCompose.emoji')}>
+                <PressableWithoutFeedback
+                    
+                    style={styles.emojiPickerButtonDropdown}
+                    disabled={props.isDisabled}
+                    onPress={onPress}
+                    id="emojiDropdownButton"
+                    accessibilityLabel="statusEmoji"
+                    role={CONST.ACCESSIBILITY_ROLE.BUTTON}
+                >
+                    {({hovered, pressed}) => (
+                        <View style={styles.emojiPickerButtonDropdownContainer}>
+                            <Text
+                                style={styles.emojiPickerButtonDropdownIcon}
+                                numberOfLines={1}
+                            >
+                                {props.value}
+                            </Text>
+                            <View style={[styles.popoverMenuIcon, styles.pointerEventsAuto, props.disabled && styles.cursorDisabled, styles.rotate90]}>
+                                <Icon
+                                    src={Expensicons.ArrowRight}
+                                    fill={StyleUtils.getIconFillColor(getButtonState(hovered, pressed))}
+                                />
+                            </View>
                         </View>
-                    </View>
-                )}
-            </PressableWithoutFeedback>
-        </Tooltip>
+                    )}
+                </PressableWithoutFeedback>
+            </Tooltip>
+        </View>
     );
 }
 
