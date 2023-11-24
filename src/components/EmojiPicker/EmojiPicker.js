@@ -56,7 +56,7 @@ const EmojiPicker = forwardRef((props, ref) => {
 
         const anchorOriginValue = anchorOrigin || DEFAULT_ANCHOR_ORIGIN;
 
-        calculateAnchorPosition(emojiPopoverAnchor.current, anchorOriginValue).then((value) => {
+        calculateAnchorPosition(emojiPopoverAnchor.current.current, anchorOriginValue).then((value) => {
             onWillShow();
             setIsEmojiPickerVisible(true);
             setEmojiPopoverAnchorPosition(value);
@@ -130,7 +130,7 @@ const EmojiPicker = forwardRef((props, ref) => {
                 }
                 return;
             }
-            calculateAnchorPosition(emojiPopoverAnchor.current, emojiPopoverAnchorOrigin).then((value) => {
+            calculateAnchorPosition(emojiPopoverAnchor.current.current, emojiPopoverAnchorOrigin).then((value) => {
                 setEmojiPopoverAnchorPosition(value);
             });
         });
@@ -158,7 +158,7 @@ const EmojiPicker = forwardRef((props, ref) => {
                 vertical: emojiPopoverAnchorPosition.vertical,
                 horizontal: emojiPopoverAnchorPosition.horizontal,
             }}
-            anchorRef={emojiPopoverAnchor}
+            anchorRef={emojiPopoverAnchor.current || {current: null}}
             withoutOverlay
             popoverDimensions={{
                 width: CONST.EMOJI_PICKER_SIZE.WIDTH,
