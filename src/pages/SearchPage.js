@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {View} from 'react-native';
@@ -97,6 +98,7 @@ class SearchPage extends Component {
      * @returns {Array}
      */
     getSections() {
+        console.log("Calling getSections");
         const sections = [];
         let indexOffset = 0;
 
