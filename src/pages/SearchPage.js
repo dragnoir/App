@@ -1,8 +1,11 @@
+
+/* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {withOnyx} from 'react-native-onyx';
 import _ from 'underscore';
+import lodash from 'lodash';
 import HeaderWithBackButton from '@components/HeaderWithBackButton';
 import networkPropTypes from '@components/networkPropTypes';
 import {withNetwork} from '@components/OnyxProvider';
@@ -55,6 +58,21 @@ const defaultProps = {
     network: {},
     isSearchingForReports: false,
 };
+
+function removeParticipantsList(inputArray) {
+    return _.map(inputArray, outerItem => {
+        // Clone the outer item to avoid direct mutation
+        const newItem = {...outerItem};
+
+        // Use _.map to iterate over the 'data' array and remove 'participantsList' from each object
+        newItem.data = _.map(newItem.data, innerItem => {
+            const { participantsList, ...rest } = innerItem;
+            return rest;
+        });
+
+        return newItem;
+    });
+}
 
 class SearchPage extends Component {
     constructor(props) {
@@ -126,7 +144,12 @@ class SearchPage extends Component {
             });
         }
 
-        return sections;
+        console.log("sections", sections);
+
+        const newData = removeParticipantsList(sections);
+
+        console.log("newData", newData);
+        return newData;
     }
 
     searchRendered() {
