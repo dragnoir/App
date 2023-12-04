@@ -110,8 +110,10 @@ class ArrowKeyFocusManager extends Component {
                 return; // no-op
             }
         }
-
-        this.props.onFocusedIndexChanged(newFocusedIndex);
+        setTimeout(() => {
+            this.props.onFocusedIndexChanged(newFocusedIndex);
+        }, 0);
+        
     }
 
     render() {
