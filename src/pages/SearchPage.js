@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {View} from 'react-native';
@@ -171,6 +172,7 @@ class SearchPage extends Component {
 
     render() {
         const sections = this.getSections();
+        console.log("sections: ", sections);
         const isOptionsDataReady = ReportUtils.isReportDataReady() && OptionsListUtils.isPersonalDetailsReady(this.props.personalDetails);
         const headerMessage = OptionsListUtils.getHeaderMessage(
             this.state.recentReports.length + this.state.personalDetails.length !== 0,

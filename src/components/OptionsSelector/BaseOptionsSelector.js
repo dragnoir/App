@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -71,6 +72,7 @@ class BaseOptionsSelector extends Component {
         super(props);
 
         this.updateFocusedIndex = this.updateFocusedIndex.bind(this);
+        this.updateScrollRendered = this.updateScrollRendered.bind(this);
         this.scrollToIndex = this.scrollToIndex.bind(this);
         this.selectRow = this.selectRow.bind(this);
         this.handleReferralModal = this.handleReferralModal.bind(this);
@@ -94,6 +96,7 @@ class BaseOptionsSelector extends Component {
             shouldShowReferralModal: false,
             errorMessage: '',
             paginationPage: 1,
+            sectionListScrollRendered: false,
         };
     }
 
@@ -365,7 +368,42 @@ class BaseOptionsSelector extends Component {
      * @param {Number} index
      */
     updateFocusedIndex(index) {
-        this.setState({focusedIndex: index}, () => this.scrollToIndex(index));
+        // Check if an update is already in progress
+        if (this.updateInProgress) {
+            return;
+        }
+
+        console.log("Checking if sectionListScrollRendered is true: ", this.state.sectionListScrollRendered);
+        if (this.state.sectionListScrollRendered) {
+            return;
+        }
+    
+        // Set the update flag
+        this.updateInProgress = true;
+    
+        const updateStateAndScroll = () => {
+            
+            this.setState({ focusedIndex: index }, () => {
+                this.scrollToIndex(index);
+                    
+                // Reset the update flag after the scroll operation
+                // If scrollToIndex involves animation, ensure it completes before resetting the flag
+                this.updateInProgress = false;
+                if (index > 2) {
+                    console.log("***  01 - updateStateAndScroll, updateScrollRendered: true");
+                    this.updateScrollRendered(true);
+                }
+                
+            });
+        };
+    
+        // Start the update with requestAnimationFrame for smoother visual updates
+        requestAnimationFrame(updateStateAndScroll);
+    }    
+
+    updateScrollRendered(state) {
+        console.log('updateScrollRendered: ', state);
+        this.setState({ sectionListScrollRendered: state });
     }
 
     /**
@@ -397,7 +435,9 @@ class BaseOptionsSelector extends Component {
             }
         }
 
+        // console.log("Scrolling to sectionIndex: ", adjustedSectionIndex, " - itemIndex: ", itemIndex);
         this.list.scrollToLocation({sectionIndex: adjustedSectionIndex, itemIndex, animated});
+        
     }
 
     /**
@@ -529,6 +569,7 @@ class BaseOptionsSelector extends Component {
                 shouldPreventDefaultFocusOnSelectRow={this.props.shouldPreventDefaultFocusOnSelectRow}
                 nestedScrollEnabled={this.props.nestedScrollEnabled}
                 bounces={!this.props.shouldTextInputAppearBelowOptions || !this.props.shouldAllowScrollingChildren}
+                onSectionListScrollRendered={this.updateScrollRendered}
                 renderFooterContent={() =>
                     shouldShowShowMoreButton && (
                         <ShowMoreButton
@@ -539,6 +580,7 @@ class BaseOptionsSelector extends Component {
                         />
                     )
                 }
+                
             />
         );
 

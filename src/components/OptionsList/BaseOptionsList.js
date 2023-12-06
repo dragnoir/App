@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import React, {forwardRef, memo, useEffect, useRef} from 'react';
 import {View} from 'react-native';
@@ -24,6 +25,9 @@ const propTypes = {
 
     /** List styles for SectionList */
     listStyles: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
+
+    /** Callback executed on scroll render */
+    onSectionListScrollRendered: PropTypes.func,
 
     ...optionsListPropTypes,
 };
@@ -72,6 +76,7 @@ function BaseOptionsList({
     nestedScrollEnabled,
     bounces,
     renderFooterContent,
+    onSectionListScrollRendered,
 }) {
     const styles = useThemeStyles();
     const flattenedData = useRef();
@@ -125,6 +130,10 @@ function BaseOptionsList({
     });
 
     const onViewableItemsChanged = () => {
+
+        console.log("***  02 - BaseOptionsList, updateScrollRendered: false");
+        onSectionListScrollRendered(false);
+
         if (didLayout.current || !onLayout) {
             return;
         }
