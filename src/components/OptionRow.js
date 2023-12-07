@@ -162,6 +162,7 @@ function OptionRow(props) {
             <Hoverable>
                 {(hovered) => (
                     <PressableWithFeedback
+                        testID={props.keyForList}
                         ref={(el) => (pressableRef.current = el)}
                         onPress={(e) => {
                             if (!props.onSelectRow) {

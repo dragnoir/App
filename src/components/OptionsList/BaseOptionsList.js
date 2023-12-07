@@ -182,6 +182,7 @@ function BaseOptionsList({
      * @return {Component}
      */
     const renderItem = ({item, index, section}) => {
+        
         const isItemDisabled = isDisabled || section.isDisabled || !!item.isDisabled;
         const isSelected = _.some(selectedOptions, (option) => {
             if (option.accountID && option.accountID === item.accountID) {
@@ -201,6 +202,7 @@ function BaseOptionsList({
 
         return (
             <OptionRow
+                keyForList={item.keyForList}
                 option={item}
                 showTitleTooltip={showTitleTooltip}
                 hoverStyle={optionHoveredStyle}
