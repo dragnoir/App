@@ -105,6 +105,7 @@ function OptionRow(props) {
     const theme = useTheme();
     const styles = useThemeStyles();
     const pressableRef = useRef(null);
+    const pressableRowRef = useRef(null);
     const [isDisabled, setIsDisabled] = useState(props.isDisabled);
 
     useEffect(() => {
@@ -179,6 +180,7 @@ function OptionRow(props) {
                             InteractionManager.runAfterInteractions(() => {
                                 result.finally(() => setIsDisabled(props.isDisabled));
                             });
+                            pressableRef.current.blur();
                         }}
                         disabled={isDisabled}
                         style={[
@@ -266,7 +268,11 @@ function OptionRow(props) {
                                             />
                                         ) : (
                                             <PressableWithFeedback
-                                                onPress={() => props.onSelectedStatePressed(props.option)}
+                                                ref={pressableRowRef}
+                                                onPress={() => {
+                                                    props.onSelectedStatePressed(props.option);
+                                                    pressableRowRef.current.blur();
+                                                }}
                                                 disabled={isDisabled}
                                                 role={CONST.ACCESSIBILITY_ROLE.CHECKBOX}
                                                 accessibilityLabel={CONST.ACCESSIBILITY_ROLE.CHECKBOX}
