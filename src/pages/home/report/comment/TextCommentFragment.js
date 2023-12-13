@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Str from 'expensify-common/lib/str';
 import PropTypes from 'prop-types';
 import React, {memo} from 'react';
@@ -53,17 +54,25 @@ function TextCommentFragment(props) {
     const {fragment, styleAsDeleted} = props;
     const {html, text} = fragment;
 
+    // console.log("Styles: ", styles);
+
     // If the only difference between fragment.text and fragment.html is <br /> tags
     // we render it as text, not as html.
     // This is done to render emojis with line breaks between them as text.
+    // console.log("fragments: ", Str.replaceAll(html, '<br />', '\n'), " ||| ", text);
     const differByLineBreaksOnly = Str.replaceAll(html, '<br />', '\n') === text;
 
     // Only render HTML if we have html in the fragment
     if (!differByLineBreaksOnly) {
+        // console.log("props.style: ", props.style);
         const editedTag = fragment.isEdited ? `<edited ${styleAsDeleted ? 'deleted' : ''}></edited>` : '';
+        // console.log("fragment.isEdited: ", fragment.isEdited, " - editedTag: ", editedTag);
         const htmlContent = styleAsDeleted ? `<del>${html}</del>` : html;
+        // console.log("styleAsDeleted: ", styleAsDeleted);
+        // console.log("htmlContent: ", htmlContent);
 
         const htmlWithTag = editedTag ? `${htmlContent}${editedTag}` : htmlContent;
+        // console.log("htmlWithTag: ", htmlWithTag);
 
         return (
             <RenderCommentHTML
@@ -74,6 +83,7 @@ function TextCommentFragment(props) {
     }
 
     const containsOnlyEmojis = EmojiUtils.containsOnlyEmojis(text);
+    // console.log("containsOnlyEmojis: ", containsOnlyEmojis);
 
     return (
         <Text style={[containsOnlyEmojis ? styles.onlyEmojisText : undefined, styles.ltr, ...props.style]}>

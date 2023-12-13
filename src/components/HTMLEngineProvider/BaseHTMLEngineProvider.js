@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import React, {useMemo} from 'react';
 import {defaultHTMLElementModels, RenderHTMLConfigProvider, TRenderEngineProvider} from 'react-native-render-html';
@@ -24,6 +25,8 @@ const defaultProps = {
     enableExperimentalBRCollapsing: false,
 };
 
+const emojiRenderfonts = ['Windows Segoe UI Emoji', ..._.values(singleFontFamily), 'Roboto', 'Segoe UI Emoji', 'Noto Color Emoji'];
+console.log(emojiRenderfonts);
 // We are using the explicit composite architecture for performance gains.
 // Configuration for RenderHTML is handled in a top-level component providing
 // context to RenderHTMLSource components. See https://git.io/JRcZb
@@ -74,11 +77,12 @@ function BaseHTMLEngineProvider(props) {
 
     return (
         <TRenderEngineProvider
+            systemFonts={emojiRenderfonts}
             customHTMLElementModels={customHTMLElementModels}
-            baseStyle={styles.webViewStyles.baseFontStyle}
+            baseStyle={styles.webViewStyles.RenderHTMLSourceFontStyle}
             tagsStyles={styles.webViewStyles.tagStyles}
             enableCSSInlineProcessing={false}
-            systemFonts={_.values(singleFontFamily)}
+            
             domVisitors={{
                 // eslint-disable-next-line no-param-reassign
                 onText: (text) => (text.data = convertToLTR(text.data)),

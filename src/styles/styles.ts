@@ -214,6 +214,15 @@ const webViewStyles = (theme: ThemeColors) =>
             lineHeight: variables.fontSizeNormalHeight,
             ...writingDirection.ltr,
         },
+
+        RenderHTMLSourceFontStyle: {
+            color: theme.text,
+            fontSize: variables.fontSizeNormal,
+            fontFamily: 'Windows Segoe UI Emoji',
+            flex: 1,
+            lineHeight: variables.fontSizeNormalHeight,
+            ...writingDirection.ltr,
+        },
     } satisfies WebViewStyle);
 
 const styles = (theme: ThemeColors) =>
