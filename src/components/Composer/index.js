@@ -438,7 +438,7 @@ function Composer({
 
     const inputStyleMemo = useMemo(
         () => [
-            StyleSheet.flatten([style, {outline: 'none'}]),
+            StyleSheet.flatten([style, {outline: 'none'}, {scrollPadding: 10}]),
             StyleUtils.getComposeTextAreaPadding(numberOfLines, isComposerFullSize),
             Browser.isMobileSafari() || Browser.isSafari() ? styles.rtlTextRenderForSafari : {},
             scrollStyleMemo,
