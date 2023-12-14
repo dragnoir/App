@@ -218,7 +218,7 @@ const webViewStyles = (theme: ThemeColors) =>
         RenderHTMLSourceFontStyle: {
             color: theme.text,
             fontSize: variables.fontSizeNormal,
-            fontFamily: 'Windows Segoe UI Emoji',
+            fontFamily: `Windows Segoe UI Emoji, ${fontFamily.EXP_NEUE}`,
             flex: 1,
             lineHeight: variables.fontSizeNormalHeight,
             ...writingDirection.ltr,
