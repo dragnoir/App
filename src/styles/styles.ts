@@ -130,7 +130,6 @@ const webViewStyles = (theme: ThemeColors) =>
         // component.
         tagStyles: {
             em: {
-                fontFamily: fontFamily.EXP_NEUE,
                 fontStyle: 'italic',
             },
 
@@ -140,7 +139,7 @@ const webViewStyles = (theme: ThemeColors) =>
             },
 
             strong: {
-                fontFamily: fontFamily.EXP_NEUE,
+                fontFamily: 'inhirit',
                 fontWeight: 'bold',
             },
 
@@ -221,6 +220,7 @@ const webViewStyles = (theme: ThemeColors) =>
             fontFamily: `Windows Segoe UI Emoji, ${fontFamily.EXP_NEUE}`,
             flex: 1,
             lineHeight: variables.fontSizeNormalHeight,
+
             ...writingDirection.ltr,
         },
     } satisfies WebViewStyle);

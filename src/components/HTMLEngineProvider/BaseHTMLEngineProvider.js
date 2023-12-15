@@ -25,7 +25,7 @@ const defaultProps = {
     enableExperimentalBRCollapsing: false,
 };
 
-const emojiRenderfonts = ['Windows Segoe UI Emoji', ..._.values(singleFontFamily), 'Roboto', 'Segoe UI Emoji', 'Noto Color Emoji'];
+const emojiRenderfonts = ['Windows Segoe UI Emoji', 'Open Sans', ..._.values(singleFontFamily), 'Segoe UI Emoji', 'Noto Color Emoji'];
 console.log(emojiRenderfonts);
 // We are using the explicit composite architecture for performance gains.
 // Configuration for RenderHTML is handled in a top-level component providing
@@ -75,14 +75,18 @@ function BaseHTMLEngineProvider(props) {
     const defaultTextProps = useMemo(() => ({selectable: props.textSelectable, allowFontScaling: false, textBreakStrategy: 'simple'}), [props.textSelectable]);
     const defaultViewProps = {style: [styles.alignItemsStart, styles.userSelectText]};
 
+    console.log(emojiRenderfonts);
+    console.log(customHTMLElementModels);
+    console.log(styles.webViewStyles.RenderHTMLSourceFontStyle);
+    console.log(styles.webViewStyles.tagStyles);
+
     return (
         <TRenderEngineProvider
             systemFonts={emojiRenderfonts}
             customHTMLElementModels={customHTMLElementModels}
             baseStyle={styles.webViewStyles.RenderHTMLSourceFontStyle}
             tagsStyles={styles.webViewStyles.tagStyles}
-            enableCSSInlineProcessing={false}
-            
+
             domVisitors={{
                 // eslint-disable-next-line no-param-reassign
                 onText: (text) => (text.data = convertToLTR(text.data)),

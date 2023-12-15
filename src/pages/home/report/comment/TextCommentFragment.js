@@ -1,7 +1,9 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import Str from 'expensify-common/lib/str';
 import PropTypes from 'prop-types';
 import React, {memo} from 'react';
+import {View} from 'react-native';
 import Text from '@components/Text';
 import withLocalize, {withLocalizePropTypes} from '@components/withLocalize';
 import withWindowDimensions, {windowDimensionsPropTypes} from '@components/withWindowDimensions';
@@ -54,16 +56,16 @@ function TextCommentFragment(props) {
     const {fragment, styleAsDeleted} = props;
     const {html, text} = fragment;
 
-    // console.log("Styles: ", styles);
+    console.log("Styles: ", styles);
 
     // If the only difference between fragment.text and fragment.html is <br /> tags
     // we render it as text, not as html.
     // This is done to render emojis with line breaks between them as text.
-    // console.log("fragments: ", Str.replaceAll(html, '<br />', '\n'), " ||| ", text);
     const differByLineBreaksOnly = Str.replaceAll(html, '<br />', '\n') === text;
 
     // Only render HTML if we have html in the fragment
     if (!differByLineBreaksOnly) {
+        // console.log("fragments: ", Str.replaceAll(html, '<br />', '\n'), " ||| ", text);
         // console.log("props.style: ", props.style);
         const editedTag = fragment.isEdited ? `<edited ${styleAsDeleted ? 'deleted' : ''}></edited>` : '';
         // console.log("fragment.isEdited: ", fragment.isEdited, " - editedTag: ", editedTag);
@@ -75,10 +77,12 @@ function TextCommentFragment(props) {
         // console.log("htmlWithTag: ", htmlWithTag);
 
         return (
-            <RenderCommentHTML
-                source={props.source}
-                html={htmlWithTag}
-            />
+            <View style={styles.baseFontStyle}>
+                <RenderCommentHTML
+                    source={props.source}
+                    html={htmlWithTag}
+                />
+            </View>
         );
     }
 
