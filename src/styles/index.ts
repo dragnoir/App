@@ -215,6 +215,15 @@ const webViewStyles = (theme: ThemeColors) =>
             lineHeight: variables.fontSizeNormalHeight,
             ...writingDirection.ltr,
         },
+
+        htmlRenderFontStyle: {
+            fontFamily: 'inherit',
+            color: theme.text,
+            fontSize: variables.fontSizeNormal,
+            flex: 1,
+            lineHeight: variables.fontSizeNormalHeight,
+            ...writingDirection.ltr,
+        },
     } satisfies WebViewStyle);
 
 const styles = (theme: ThemeColors) =>

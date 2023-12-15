@@ -24,6 +24,8 @@ const defaultProps = {
     enableExperimentalBRCollapsing: false,
 };
 
+const  emojiRenderfonts  = ['inherit', 'Windows Segoe UI Emoji', ..._.values(singleFontFamily)];
+
 // We are using the explicit composite architecture for performance gains.
 // Configuration for RenderHTML is handled in a top-level component providing
 // context to RenderHTMLSource components. See https://git.io/JRcZb
@@ -75,10 +77,10 @@ function BaseHTMLEngineProvider(props) {
     return (
         <TRenderEngineProvider
             customHTMLElementModels={customHTMLElementModels}
-            baseStyle={styles.webViewStyles.baseFontStyle}
+            baseStyle={styles.webViewStyles.htmlRenderFontStyle}
             tagsStyles={styles.webViewStyles.tagStyles}
             enableCSSInlineProcessing={false}
-            systemFonts={_.values(singleFontFamily)}
+            systemFonts={_.values(emojiRenderfonts)}
             domVisitors={{
                 // eslint-disable-next-line no-param-reassign
                 onText: (text) => (text.data = convertToLTR(text.data)),
