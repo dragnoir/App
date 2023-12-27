@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import ExpensiMark from 'expensify-common/lib/ExpensiMark';
 import Str from 'expensify-common/lib/str';
 import {isEmpty} from 'lodash';
@@ -4068,9 +4069,35 @@ function getTaskAssigneeChatOnyxData(
 }
 
 /**
+ * Checks if a report is a group chat.
+ *
+ * A report is a group chat if it meets the following conditions:
+ * - Not a chat thread.
+ * - Not a task report.
+ * - Not a money request / IOU report.
+ * - Not an archived room.
+ * - Not a public / admin / announce chat room (chat type doesn't match any of the specified types).
+ * - More than 2 participants.
+ *
+ */
+function isGroupChat(report: OnyxEntry<Report>): boolean {
+    return Boolean(
+        report &&
+            !isChatThread(report) &&
+            !isTaskReport(report) &&
+            !isMoneyRequestReport(report) &&
+            !isArchivedRoom(report) &&
+            !Object.values(CONST.REPORT.CHAT_TYPE).some((chatType) => chatType === getChatType(report)) &&
+            (report.participantAccountIDs?.length ?? 0) > 2,
+    );
+}
+
+/**
  * Returns an array of the participants Ids of a report
  */
 function getParticipantsIDs(report: OnyxEntry<Report>): number[] {
+    console.log('(report): ', report);
+
     if (!report) {
         return [];
     }
@@ -4083,6 +4110,53 @@ function getParticipantsIDs(report: OnyxEntry<Report>): number[] {
         const onlyUnique = [...new Set([...onlyTruthyValues])];
         return onlyUnique;
     }
+
+    /* console.log('isChatReport: ', isChatReport(report));
+    console.log('isChatRoom: ', isChatRoom(report));
+    console.log('isPolicyExpenseChat: ', isPolicyExpenseChat(report));
+    console.log('isChatThread: ', isChatThread(report));
+    console.log('isTaskReport: ', isTaskReport(report)); */
+
+    console.log('isDefaultRoom: ', isDefaultRoom(report));
+    console.log('isAdminRoom: ', isAdminRoom(report));
+    console.log('isAnnounceRoom: ', isAnnounceRoom(report));
+    console.log('isUserCreatedPolicyRoom: ', isUserCreatedPolicyRoom(report));
+    console.log('isChatRoom: ', isChatRoom(report));
+    console.log('isArchivedRoom: ', isArchivedRoom(report));
+    console.log('isExpensifyOnlyParticipantInReport: ', isExpensifyOnlyParticipantInReport(report));
+    console.log('isPublicRoom: ', isPublicRoom(report));
+    console.log('isPublicAnnounceRoom: ', isPublicAnnounceRoom(report));
+    console.log('isConciergeChatReport: ', isConciergeChatReport(report));
+    console.log('isProcessingReport: ', isProcessingReport(report));
+    console.log('isPolicyExpenseChat: ', isPolicyExpenseChat(report));
+    console.log('isControlPolicyExpenseChat: ', isControlPolicyExpenseChat(report));
+    console.log('isControlPolicyExpenseReport: ', isControlPolicyExpenseReport(report));
+    console.log('isGroupPolicyExpenseChat: ', isGroupPolicyExpenseChat(report));
+    console.log('isGroupPolicyExpenseReport: ', isGroupPolicyExpenseReport(report));
+    console.log('isChatReport: ', isChatReport(report));
+    console.log('isExpenseReport: ', isExpenseReport(report));
+    console.log('isExpenseRequest: ', isExpenseRequest(report));
+    console.log('isIOUReport: ', isIOUReport(report));
+    console.log('isTaskReport: ', isTaskReport(report));
+    console.log('isOpenTaskReport: ', isOpenTaskReport(report));
+    console.log('isCanceledTaskReport: ', isCanceledTaskReport(report));
+    console.log('isCompletedTaskReport: ', isCompletedTaskReport(report));
+    console.log('isMoneyRequestReport: ', isMoneyRequestReport(report));
+    console.log('isMoneyRequest: ', isMoneyRequest(report));
+    console.log('isThread: ', isThread(report));
+    console.log('isChatThread: ', isChatThread(report));
+    console.log('isChildReport: ', isChildReport(report));
+    console.log('isDM: ', isDM(report));
+    console.log('isOneOnOneChat: ', isOneOnOneChat(report));
+    console.log('isGroupChat: ', isGroupChat(report));
+    console.log('isDraftExpenseReport: ', isDraftExpenseReport(report));
+
+    if (isChatReport(report) && !isChatRoom(report) && !isPolicyExpenseChat(report) && !isChatThread(report) && !isTaskReport(report)) {
+        console.log('Yes, it is a chat report');
+        const chatReportParticipants = [currentUserAccountID, ...participants].filter(Boolean) as number[];
+        return chatReportParticipants;
+    }
+
     return participants;
 }
 
@@ -4140,30 +4214,6 @@ function getIOUReportActionDisplayMessage(reportAction: OnyxEntry<ReportAction>)
         formattedAmount,
         comment: transactionDetails?.comment ?? '',
     });
-}
-
-/**
- * Checks if a report is a group chat.
- *
- * A report is a group chat if it meets the following conditions:
- * - Not a chat thread.
- * - Not a task report.
- * - Not a money request / IOU report.
- * - Not an archived room.
- * - Not a public / admin / announce chat room (chat type doesn't match any of the specified types).
- * - More than 2 participants.
- *
- */
-function isGroupChat(report: OnyxEntry<Report>): boolean {
-    return Boolean(
-        report &&
-            !isChatThread(report) &&
-            !isTaskReport(report) &&
-            !isMoneyRequestReport(report) &&
-            !isArchivedRoom(report) &&
-            !Object.values(CONST.REPORT.CHAT_TYPE).some((chatType) => chatType === getChatType(report)) &&
-            (report.participantAccountIDs?.length ?? 0) > 2,
-    );
 }
 
 function shouldUseFullTitleToDisplay(report: OnyxEntry<Report>): boolean {

@@ -104,7 +104,8 @@ function ReportParticipantsPage(props) {
                                 ReportUtils.isPolicyExpenseChat(props.report) ||
                                 ReportUtils.isChatThread(props.report) ||
                                 ReportUtils.isTaskReport(props.report) ||
-                                ReportUtils.isMoneyRequestReport(props.report)
+                                ReportUtils.isMoneyRequestReport(props.report) ||
+                                ReportUtils.isChatReport(props.report)
                                 ? 'common.members'
                                 : 'common.details',
                         )}
