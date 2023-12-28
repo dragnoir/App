@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
@@ -328,14 +329,22 @@ function EmojiPickerMenu({forwardedRef, onEmojiSelected}) {
      */
     const renderItem = useCallback(
         ({item, index, target}) => {
+            console.log("*************************");
+            console.log("item: ", item);
+            console.log("index: ", index);
+            console.log("target: ", target);
+            console.log("*************************");
             const {code, types} = item;
             if (item.spacer) {
                 return null;
             }
 
             if (item.header) {
+                /* if (code === "frequentlyUsed" && target === 'StickyHeader') {
+                    return null;
+                }; */
                 return (
-                    <View style={[styles.emojiHeaderContainer, target === 'StickyHeader' ? styles.mh4 : undefined]}>
+                    <View style={[styles.emojiHeaderContainer, target === 'StickyHeader' ? styles.stickyHeaderEmoji : undefined]}>
                         <Text style={styles.textLabelSupporting}>{translate(`emojiPicker.headers.${code}`)}</Text>
                     </View>
                 );

@@ -3333,6 +3333,12 @@ const styles = (theme: ThemeColors) =>
             lineHeight: variables.iconSizeXLarge,
         },
 
+        stickyHeaderEmoji: {
+            position: 'absolute',
+            width: '-webkit-fill-available',
+            ...spacing.mh4,
+        },
+
         textReactionSenders: {
             color: theme.tooltipPrimaryText,
             ...wordBreak.breakWord,

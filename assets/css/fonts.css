@@ -59,6 +59,11 @@
     src: url('/fonts/seguiemj.ttf');
 }
 
+@font-face {
+    font-family: 'Noto Color Emoji';
+    src: url('/fonts/NotoColorEmoji-Regular.ttf');
+}
+
 * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
