@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import lodashGet from 'lodash/get';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {InteractionManager, View} from 'react-native';
@@ -145,6 +146,7 @@ function StatusPage({draftStatus, currentUserPersonalDetails}) {
                 submitButtonStyles={[styles.mh5, styles.flexGrow1]}
                 onSubmit={updateStatus}
                 validate={validateForm}
+                isSubmitButtonVisible={false}
                 enabledWhenOffline
             >
                 <View style={[styles.mh5, styles.mv1]}>
