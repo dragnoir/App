@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {deepEqual} from 'fast-equals';
 import PropTypes from 'prop-types';
 import React, {useEffect, useMemo, useRef} from 'react';
@@ -89,9 +90,15 @@ function OptionRowLHNData({
         // Note: ideally we'd have this as a dependent selector in onyx!
         const item = SidebarUtils.getOptionData(fullReport, reportActions, personalDetails, preferredLocale, policy, parentReportAction);
         if (deepEqual(item, optionItemRef.current)) {
+
+            // console.log('OptionRowLHNData item not changed', item);
+
             return optionItemRef.current;
         }
         optionItemRef.current = item;
+
+        // console.log('OptionRowLHNData item memo: ', item);
+        
         return item;
         // Listen parentReportAction to update title of thread report when parentReportAction changed
         // Listen to transaction to update title of transaction report when transaction changed

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import ExpensiMark from 'expensify-common/lib/ExpensiMark';
 import Str from 'expensify-common/lib/str';
 import {isEmpty} from 'lodash';
@@ -3295,9 +3296,18 @@ function isUnread(report: OnyxEntry<Report>): boolean {
         return false;
     }
 
+    // console.log('****************************************************');
+    // console.log('report.reportID: ', report.reportID);
     // lastVisibleActionCreated and lastReadTime are both datetime strings and can be compared directly
     const lastVisibleActionCreated = report.lastVisibleActionCreated ?? '';
+    // console.log('report.lastVisibleActionCreated: ', report.lastVisibleActionCreated);
+
     const lastReadTime = report.lastReadTime ?? '';
+    // console.log('report.lastReadTime: ', report.lastReadTime);
+
+    // console.log('lastReadTime < lastVisibleActionCreated => isUnread: ', lastReadTime < lastVisibleActionCreated);
+    // console.log('****************************************************');
+
     return lastReadTime < lastVisibleActionCreated;
 }
 

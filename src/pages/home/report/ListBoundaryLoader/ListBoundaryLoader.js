@@ -49,7 +49,7 @@ function ListBoundaryLoader({type, isLoadingOlderReportActions, isLoadingInitial
         // Also, if we are offline and the report is not yet loaded till the beginning, we assume there are more actions to load,
         // therefore show the skeleton view, even though the actions are not loading.
         if (lastReportActionName !== CONST.REPORT.ACTIONS.TYPE.CREATED && (isLoadingInitialReportActions || isOffline)) {
-            return <ReportActionsSkeletonView possibleVisibleContentItems={3} />;
+            return <ReportActionsSkeletonView />;
         }
     }
     if (type === CONST.LIST_COMPONENTS.HEADER && isLoadingNewerReportActions) {
