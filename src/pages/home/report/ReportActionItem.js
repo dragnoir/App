@@ -676,7 +676,10 @@ function ReportActionItem(props) {
             >
                 {(hovered) => (
                     <View style={highlightedBackgroundColorIfNeeded}>
-                        {props.shouldDisplayNewMarker && <UnreadActionIndicator reportActionID={props.action.reportActionID} />}
+                        {props.shouldDisplayNewMarker && <UnreadActionIndicator 
+                            reportActionID={props.action.reportActionID}
+                            shouldHideThreadDividerLine={props.shouldHideThreadDividerLine}
+                        />}
                         <MiniReportActionContextMenu
                             reportID={props.report.reportID}
                             reportActionID={props.action.reportActionID}

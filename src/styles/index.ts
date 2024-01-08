@@ -2509,6 +2509,20 @@ const styles = (theme: ThemeColors) =>
             ...cursor.cursorDefault,
         },
 
+        unreadIndicatorContainerFirst: {
+            position: 'relative',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: 1,
+            paddingHorizontal: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            zIndex: 1,
+            marginBottom: 8,
+            ...cursor.cursorDefault,
+        },
+
         unreadIndicatorLine: {
             height: 1,
             backgroundColor: theme.unreadIndicator,

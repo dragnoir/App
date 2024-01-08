@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import type {StyleProp, TextStyle} from 'react-native';
 import {View} from 'react-native';
@@ -45,6 +46,9 @@ function MoneyReportView({report, shouldShowHorizontalRule}: MoneyReportViewProp
         StyleUtils.getFontSizeStyle(variables.fontSizeh1),
         StyleUtils.getColorStyle(theme.textSupporting),
     ];
+
+    console.log('shouldShowHorizontalRule:  ', shouldShowHorizontalRule);
+    console.log('styles.reportHorizontalRule:  ', styles.reportHorizontalRule);
 
     return (
         <View style={[StyleUtils.getReportWelcomeContainerStyle(isSmallScreenWidth, true)]}>
