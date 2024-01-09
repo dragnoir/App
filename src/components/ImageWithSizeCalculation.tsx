@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import delay from 'lodash/delay';
 import React, {useEffect, useRef, useState} from 'react';
 import type {StyleProp, ViewStyle} from 'react-native';
@@ -43,12 +44,16 @@ function ImageWithSizeCalculation({url, style, onMeasure, isAuthTokenRequired}: 
     const [isImageCached, setIsImageCached] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [imageHeight, setImageHeight] = useState(0);
     const onError = () => {
         Log.hmmm('Unable to fetch image to calculate size', {url});
     };
 
     const imageLoadedSuccessfully = (event: OnLoadNativeEvent) => {
         isLoadedRef.current = true;
+
+        setImageHeight(Math.ceil(event.nativeEvent.height / (event.nativeEvent.width / 396)));
+
         onMeasure({
             width: event.nativeEvent.width,
             height: event.nativeEvent.height,
@@ -72,10 +77,10 @@ function ImageWithSizeCalculation({url, style, onMeasure, isAuthTokenRequired}: 
     return (
         <View style={[styles.w100, styles.h100, style]}>
             <Image
-                style={[styles.w100, styles.h100]}
+                style={[styles.w100, {height: imageHeight}]}
                 source={{uri: url}}
                 isAuthTokenRequired={isAuthTokenRequired}
-                resizeMode={RESIZE_MODES.cover}
+                resizeMode={RESIZE_MODES.contain}
                 onLoadStart={() => {
                     if (isLoadedRef.current ?? isLoading) {
                         return;
