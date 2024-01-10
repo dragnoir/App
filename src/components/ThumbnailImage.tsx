@@ -79,6 +79,12 @@ function ThumbnailImage({previewSourceURL, style, isAuthTokenRequired, imageWidt
     const [currentImageWidth, setCurrentImageWidth] = useState(initialDimensions.thumbnailWidth);
     const [currentImageHeight, setCurrentImageHeight] = useState(initialDimensions.thumbnailHeight);
 
+    // Use a variable to save container width on layout
+    const [containerWidth, setContainerWidth] = useState(100);
+
+    // Now compute the aspect ratio of the image
+    const aspectRatio = currentImageWidth && currentImageHeight ? currentImageWidth / currentImageHeight : 1;
+
     /**
      * Update the state with the computed thumbnail sizes.
      * @param Params - width and height of the original image.
@@ -94,10 +100,14 @@ function ThumbnailImage({previewSourceURL, style, isAuthTokenRequired, imageWidt
         [windowHeight],
     );
 
-    const sizeStyles = shouldDynamicallyResize ? [StyleUtils.getWidthAndHeightStyle(currentImageWidth ?? 0, currentImageHeight)] : [styles.w100, styles.h100];
+    const sizeStyles = shouldDynamicallyResize ? [StyleUtils.getWidthAndHeightStyle(currentImageWidth ?? 0, currentImageHeight)] : [styles.w100, {height: containerWidth / aspectRatio}];
 
     return (
-        <View style={[style, styles.overflowHidden]}>
+        <View
+            style={[style, styles.overflowHidden]}
+            // Get container width
+            onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+        >
             <View style={[...sizeStyles, styles.alignItemsCenter, styles.justifyContentCenter]}>
                 <ImageWithSizeCalculation
                     url={previewSourceURL}
