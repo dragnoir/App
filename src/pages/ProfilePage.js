@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {parsePhoneNumber} from 'awesome-phonenumber';
 import Str from 'expensify-common/lib/str';
 import lodashGet from 'lodash/get';
@@ -28,6 +29,7 @@ import compose from '@libs/compose';
 import Navigation from '@libs/Navigation/Navigation';
 import * as PersonalDetailsUtils from '@libs/PersonalDetailsUtils';
 import * as ReportUtils from '@libs/ReportUtils';
+import * as ReportActionsUtils from '@libs/ReportActionsUtils';
 import * as UserUtils from '@libs/UserUtils';
 import * as ValidationUtils from '@libs/ValidationUtils';
 import variables from '@styles/variables';
@@ -134,7 +136,44 @@ function ProfilePage(props) {
 
     const navigateBackTo = lodashGet(props.route, 'params.backTo', ROUTES.HOME);
 
-    const shouldShowNotificationPreference = !_.isEmpty(props.report) && props.report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN;
+    const isReportExist = ReportUtils.getReport(props.report.reportID)
+    console.log('ProfilePage: isReportExist: ', isReportExist);
+    console.log('props.report.reportID: ', props.report.reportID);
+
+    const lastVisibleMessage = ReportActionsUtils.getLastVisibleMessage(props.report.reportID);
+    // console.log('ProfilePage: lastVisibleMessage', lastVisibleMessage);
+
+    function areDatesEqual(lastReadTime, lastVisibleActionCreated) {
+        // Removing the milliseconds part from the date-time strings
+        const lastReadTimeWithoutMillis = lastReadTime.substring(0, 19);
+        const lastVisibleActionCreatedWithoutMillis = lastVisibleActionCreated.substring(0, 19);
+    
+        // Creating Date objects
+        const lastReadDate = new Date(lastReadTimeWithoutMillis);
+        const lastVisibleActionCreatedDate = new Date(lastVisibleActionCreatedWithoutMillis);
+    
+        // Returning true if dates are equal, false otherwise
+        return lastReadDate.getTime() === lastVisibleActionCreatedDate.getTime();
+    }
+    
+    // Example usage
+    const result = areDatesEqual(props.report.lastReadTime, props.report.lastVisibleActionCreated);
+    console.log("areDatesEqual: ", result);
+
+
+    const isEmptyChat = !props.report.lastMessageText && !props.report.lastMessageTranslationKey && !lastVisibleMessage.lastMessageText && !lastVisibleMessage.lastMessageTranslationKey;
+    // console.log('!props.report.lastMessageText: ', !props.report.lastMessageText);
+    // console.log('!props.report.lastMessageTranslationKey: ', !props.report.lastMessageTranslationKey);
+    // console.log('!lastVisibleMessage.lastMessageText: ', !lastVisibleMessage.lastMessageText);
+    // console.log('!lastVisibleMessage.lastMessageTranslationKey: ', !lastVisibleMessage.lastMessageTranslationKey);
+    // console.log('isEmptyChat: ', isEmptyChat);
+    
+    const shouldShowNotificationPreference = !_.isEmpty(props.report) && !isEmptyChat && props.report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN;
+    // console.log('!_.isEmpty(props.report): ', !_.isEmpty(props.report));
+    // console.log('!isEmptyChat: ', !isEmptyChat);
+    // console.log('props.report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN: ', props.report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN);
+    // console.log('shouldShowNotificationPreference: ', shouldShowNotificationPreference);
+
     const notificationPreference = shouldShowNotificationPreference ? props.translate(`notificationPreferencesPage.notificationPreferences.${props.report.notificationPreference}`) : '';
 
     // eslint-disable-next-line rulesdir/prefer-early-return
