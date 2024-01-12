@@ -142,7 +142,7 @@ function OptionRow({
     const sidebarInnerRowStyle = StyleSheet.flatten([styles.chatLinkRowPressable, styles.flexGrow1, styles.optionItemAvatarNameWrapper, styles.optionRow, styles.justifyContentCenter]);
     const flattenHoverStyle = StyleSheet.flatten(hoverStyle);
     const hoveredStyle = hoverStyle ? flattenHoverStyle : styles.sidebarLinkHover;
-    const hoveredBackgroundColor = hoveredStyle?.backgroundColor ? (hoveredStyle.backgroundColor as string) : backgroundColor;
+    let hoveredBackgroundColor = hoveredStyle?.backgroundColor ? (hoveredStyle.backgroundColor as string) : backgroundColor;
     const focusedBackgroundColor = styles.sidebarLinkActive.backgroundColor;
     const isMultipleParticipant = (option.participantsList?.length ?? 0) > 1;
 
@@ -151,6 +151,7 @@ function OptionRow({
     let subscriptColor = theme.appBG;
     if (optionIsFocused) {
         subscriptColor = focusedBackgroundColor;
+        hoveredBackgroundColor = focusedBackgroundColor;
     }
 
     return (
