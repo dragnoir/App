@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {useMemo, useState} from 'react';
 import type {LayoutChangeEvent} from 'react-native';
 import {View} from 'react-native';
@@ -24,6 +25,8 @@ type EReceiptThumbnailProps = EReceiptThumbnailOnyxProps & {
     /** TransactionID of the transaction this EReceipt corresponds to. It's used by withOnyx HOC */
     // eslint-disable-next-line react/no-unused-prop-types
     transactionID: string;
+
+    numberOfShownImages: number;
 };
 
 const backgroundImages = {
@@ -35,12 +38,9 @@ const backgroundImages = {
     [CONST.ERECEIPT_COLORS.PINK]: eReceiptBGs.EReceiptBG_Pink,
 };
 
-function EReceiptThumbnail({transaction}: EReceiptThumbnailProps) {
+function EReceiptThumbnail({transaction, numberOfShownImages}: EReceiptThumbnailProps) {
     const styles = useThemeStyles();
     const StyleUtils = useStyleUtils();
-
-    const [containerWidth, setContainerWidth] = useState(0);
-    const [containerHeight, setContainerHeight] = useState(0);
 
     const backgroundImage = useMemo(() => backgroundImages[StyleUtils.getEReceiptColorCode(transaction)], [StyleUtils, transaction]);
 
@@ -48,18 +48,12 @@ function EReceiptThumbnail({transaction}: EReceiptThumbnailProps) {
     const primaryColor = colorStyles?.backgroundColor;
     const secondaryColor = colorStyles?.color;
 
-    const onContainerLayout = (event: LayoutChangeEvent) => {
-        const {width, height} = event.nativeEvent.layout;
-        setContainerWidth(width);
-        setContainerHeight(height);
-    };
-
     const transactionDetails = ReportUtils.getTransactionDetails(transaction);
     const transactionMCCGroup = transactionDetails?.mccGroup;
     const MCCIcon = transactionMCCGroup ? MCCIcons[`${transactionMCCGroup}`] : undefined;
 
-    const isSmall = containerWidth && containerWidth < variables.eReceiptThumbnailSmallBreakpoint;
-    const isMedium = containerWidth && containerWidth < variables.eReceiptThumbnailMediumBreakpoint;
+    const isSmall = numberOfShownImages && numberOfShownImages > 2;
+    const isMedium = numberOfShownImages && numberOfShownImages <= 2;
 
     let receiptIconWidth: number = variables.eReceiptIconWidth;
     let receiptIconHeight: number = variables.eReceiptIconHeight;
@@ -76,16 +70,7 @@ function EReceiptThumbnail({transaction}: EReceiptThumbnailProps) {
     }
 
     return (
-        <View
-            style={[
-                styles.flex1,
-                primaryColor ? StyleUtils.getBackgroundColorStyle(primaryColor) : {},
-                styles.overflowHidden,
-                styles.alignItemsCenter,
-                containerHeight && containerHeight < variables.eReceiptThumnailCenterReceiptBreakpoint ? styles.justifyContentCenter : {},
-            ]}
-            onLayout={onContainerLayout}
-        >
+        <View style={[styles.flex1, primaryColor ? StyleUtils.getBackgroundColorStyle(primaryColor) : {}, styles.overflowHidden, styles.alignItemsCenter, styles.justifyContentCenter]}>
             <Image
                 source={backgroundImage}
                 style={styles.eReceiptBackgroundThumbnail}

@@ -34,6 +34,8 @@ const propTypes = {
 
     /** whether the receipt can be replaced */
     canEditReceipt: PropTypes.bool,
+
+    numberOfShownImages: PropTypes.number,
 };
 
 const defaultProps = {
@@ -42,6 +44,7 @@ const defaultProps = {
     enablePreviewModal: false,
     isLocalFile: false,
     canEditReceipt: false,
+    numberOfShownImages: 1,
 };
 
 /**
@@ -50,7 +53,7 @@ const defaultProps = {
  * and optional preview modal as well.
  */
 
-function ReportActionItemImage({thumbnail, image, enablePreviewModal, transaction, canEditReceipt, isLocalFile}) {
+function ReportActionItemImage({thumbnail, image, enablePreviewModal, transaction, canEditReceipt, isLocalFile, numberOfShownImages}) {
     const styles = useThemeStyles();
     const {translate} = useLocalize();
     const imageSource = tryResolveUrlFromApiRoot(image || '');
@@ -62,7 +65,7 @@ function ReportActionItemImage({thumbnail, image, enablePreviewModal, transactio
     if (isEReceipt) {
         receiptImageComponent = (
             <View style={[styles.w100, styles.h100]}>
-                <EReceiptThumbnail transactionID={transaction.transactionID} />
+                <EReceiptThumbnail transactionID={transaction.transactionID} numberOfShownImages={numberOfShownImages}/>
             </View>
         );
     } else if (thumbnail && !isLocalFile && !Str.isPDF(imageSource)) {
