@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+
 @font-face {
     font-family: ExpensifyNeue-Regular;
     font-weight: 400;
@@ -52,6 +54,11 @@
     font-weight: 500;
     font-style: italic;
     src: url('/fonts/ExpensifyNewKansas-MediumItalic.woff2') format('woff2'),  url('/fonts/ExpensifyNewKansas-MediumItalic.woff') format('woff');
+}
+
+@font-face {
+    font-family: Noto Color Emoji;
+    src: url('/fonts/NotoColorEmoji-Regular.ttf') format('ttf');
 }
 
 @font-face {
