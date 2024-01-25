@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-import React, {useMemo, useState} from 'react';
-import type {LayoutChangeEvent} from 'react-native';
+import React, {useMemo} from 'react';
 import {View} from 'react-native';
 import type {OnyxEntry} from 'react-native-onyx';
 import {withOnyx} from 'react-native-onyx';
@@ -27,6 +26,8 @@ type EReceiptThumbnailProps = EReceiptThumbnailOnyxProps & {
     transactionID: string;
 
     numberOfShownImages: number;
+
+    centerV: boolean;
 };
 
 const backgroundImages = {
@@ -38,7 +39,7 @@ const backgroundImages = {
     [CONST.ERECEIPT_COLORS.PINK]: eReceiptBGs.EReceiptBG_Pink,
 };
 
-function EReceiptThumbnail({transaction, numberOfShownImages}: EReceiptThumbnailProps) {
+function EReceiptThumbnail({transaction, numberOfShownImages = 1, centerV = true}: EReceiptThumbnailProps) {
     const styles = useThemeStyles();
     const StyleUtils = useStyleUtils();
 
@@ -70,7 +71,15 @@ function EReceiptThumbnail({transaction, numberOfShownImages}: EReceiptThumbnail
     }
 
     return (
-        <View style={[styles.flex1, primaryColor ? StyleUtils.getBackgroundColorStyle(primaryColor) : {}, styles.overflowHidden, styles.alignItemsCenter, styles.justifyContentCenter]}>
+        <View
+            style={[
+                styles.flex1,
+                primaryColor ? StyleUtils.getBackgroundColorStyle(primaryColor) : {},
+                styles.overflowHidden,
+                styles.alignItemsCenter,
+                centerV ? styles.justifyContentCenter : {},
+            ]}
+        >
             <Image
                 source={backgroundImage}
                 style={styles.eReceiptBackgroundThumbnail}
