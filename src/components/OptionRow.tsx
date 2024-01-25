@@ -216,7 +216,7 @@ function OptionRow({
                                         <MultipleAvatars
                                             icons={option.icons}
                                             size={CONST.AVATAR_SIZE.DEFAULT}
-                                            secondAvatarStyle={[StyleUtils.getBackgroundAndBorderStyle(hovered ? hoveredBackgroundColor : subscriptColor)]}
+                                            secondAvatarStyle={optionIsFocused ? {} : [StyleUtils.getBackgroundAndBorderStyle(hovered ? hoveredBackgroundColor : subscriptColor)]}
                                             shouldShowTooltip={showTitleTooltip && OptionsListUtils.shouldOptionShowTooltip(option)}
                                         />
                                     ))}
