@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, {memo, useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
@@ -158,6 +159,23 @@ function ReportActionItem(props) {
     );
     const originalMessage = lodashGet(props.action, 'originalMessage', {});
     const isDeletedParentAction = ReportActionsUtils.isDeletedParentAction(props.action);
+
+    const [replaceHorizontalRuleByNewMarker, setReplaceHorizontalRuleByNewMarker] = useState(false);
+
+    useEffect(() => {
+        if (!ReportUtils.isExpenseReport(props.report) && !ReportUtils.isIOUReport(props.report)) {
+            return;
+        }
+
+        console.log("ReportActionItem: shouldHideThreadDividerLine", props.shouldHideThreadDividerLine);
+        console.log("ReportActionItem: replaceHorizontalRuleByNewMarker", replaceHorizontalRuleByNewMarker);
+
+        if (props.shouldHideThreadDividerLine) {
+            setReplaceHorizontalRuleByNewMarker(true);
+            console.log("YES: The Horizontal Rule should be replaced by a new marker", replaceHorizontalRuleByNewMarker);
+        }
+        
+    }, [props.report, props.shouldHideThreadDividerLine, replaceHorizontalRuleByNewMarker]);
 
     // IOUDetails only exists when we are sending money
     const isSendingMoney = originalMessage.type === CONST.IOU.REPORT_ACTION_TYPE.PAY && _.has(originalMessage, 'IOUDetails');
@@ -654,6 +672,7 @@ function ReportActionItem(props) {
                         report={props.report}
                         policyReportFields={_.values(props.policyReportFields)}
                         shouldShowHorizontalRule={!props.shouldHideThreadDividerLine}
+                        replaceHorizontalRuleByNewMarker={replaceHorizontalRuleByNewMarker}
                     />
                 </OfflineWithFeedback>
             );
@@ -696,7 +715,18 @@ function ReportActionItem(props) {
     const isMultipleParticipant = whisperedToAccountIDs.length > 1;
     const isWhisperOnlyVisibleByUser = isWhisper && ReportUtils.isCurrentUserTheOnlyParticipant(whisperedToAccountIDs);
     const whisperedToPersonalDetails = isWhisper ? _.filter(personalDetails, (details) => _.includes(whisperedToAccountIDs, details.accountID)) : [];
-    const displayNamesWithTooltips = isWhisper ? ReportUtils.getDisplayNamesWithTooltips(whisperedToPersonalDetails, isMultipleParticipant) : [];
+    const displayNamesWithTooltips = isWhisper ? ReportUtils.getDisplayNamesWithTooltips(whisperedToPersonalDetails, isMultipleParticipant) : [];    
+
+    /* console.log("component ID: ", props.action.reportActionID);
+    console.log("ReportActionItem: shouldDisplayNewMarker", props.shouldDisplayNewMarker);
+    // console.log("!props.shouldHideThreadDividerLine", !props.shouldHideThreadDividerLine);
+    if (!props.shouldDisplayNewMarker && props.shouldHideThreadDividerLine) {
+        console.log("NO: The component should not be rendered");    
+    }
+    if (props.shouldDisplayNewMarker && !props.shouldHideThreadDividerLine) {
+        console.log("YES: The component should be rendered");    
+    } */
+
     return (
         <PressableWithSecondaryInteraction
             ref={popoverAnchorRef}
@@ -714,7 +744,9 @@ function ReportActionItem(props) {
             >
                 {(hovered) => (
                     <View style={highlightedBackgroundColorIfNeeded}>
-                        {props.shouldDisplayNewMarker && <UnreadActionIndicator reportActionID={props.action.reportActionID} />}
+                        {props.shouldDisplayNewMarker && !replaceHorizontalRuleByNewMarker &&
+                            <UnreadActionIndicator reportActionID={props.action.reportActionID} shouldHideThreadDividerLine={props.shouldHideThreadDividerLine}/>
+                        }
                         <MiniReportActionContextMenu
                             reportID={props.report.reportID}
                             reportActionID={props.action.reportActionID}

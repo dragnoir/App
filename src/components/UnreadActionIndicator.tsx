@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import {View} from 'react-native';
 import useLocalize from '@hooks/useLocalize';
@@ -7,17 +8,27 @@ import Text from './Text';
 
 type UnreadActionIndicatorProps = {
     reportActionID: string;
+    shouldHideThreadDividerLine?: boolean;
 };
 
-function UnreadActionIndicator({reportActionID}: UnreadActionIndicatorProps) {
+function UnreadActionIndicator({reportActionID, shouldHideThreadDividerLine}: UnreadActionIndicatorProps) {
     const styles = useThemeStyles();
     const {translate} = useLocalize();
+
+    // console.log('shouldHideThreadDividerLine', shouldHideThreadDividerLine);
+
+    // Don't render the component until shouldHideThreadDividerLine is defined
+    if (shouldHideThreadDividerLine === undefined || shouldHideThreadDividerLine === null) {
+        return null;
+    }
+
+    const containerStyle = shouldHideThreadDividerLine ? styles.mosUnreadIndicatorContainer : styles.unreadIndicatorContainer;
 
     return (
         <View
             accessibilityLabel={translate('accessibilityHints.newMessageLineIndicator')}
             data-action-id={reportActionID}
-            style={[styles.unreadIndicatorContainer, styles.userSelectNone, styles.pointerEventsNone]}
+            style={[containerStyle, styles.userSelectNone, styles.pointerEventsNone]}
             dataSet={{[CONST.SELECTION_SCRAPER_HIDDEN_ELEMENT]: true}}
         >
             <View style={styles.unreadIndicatorLine} />

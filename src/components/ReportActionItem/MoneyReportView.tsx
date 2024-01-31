@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {useMemo} from 'react';
 import type {StyleProp, TextStyle} from 'react-native';
 import {View} from 'react-native';
@@ -9,6 +10,7 @@ import MenuItemWithTopDescription from '@components/MenuItemWithTopDescription';
 import OfflineWithFeedback from '@components/OfflineWithFeedback';
 import SpacerView from '@components/SpacerView';
 import Text from '@components/Text';
+import UnreadActionIndicator from '@components/UnreadActionIndicator';
 import useLocalize from '@hooks/useLocalize';
 import usePermissions from '@hooks/usePermissions';
 import useStyleUtils from '@hooks/useStyleUtils';
@@ -33,6 +35,8 @@ type MoneyReportViewComponentProps = {
 
     /** Whether we should display the horizontal rule below the component */
     shouldShowHorizontalRule: boolean;
+
+    replaceHorizontalRuleByNewMarker: boolean;
 };
 
 type MoneyReportViewOnyxProps = {
@@ -42,7 +46,7 @@ type MoneyReportViewOnyxProps = {
 
 type MoneyReportViewProps = MoneyReportViewComponentProps & MoneyReportViewOnyxProps;
 
-function MoneyReportView({report, policyReportFields, shouldShowHorizontalRule, policies}: MoneyReportViewProps) {
+function MoneyReportView({report, policyReportFields, shouldShowHorizontalRule, policies, replaceHorizontalRuleByNewMarker}: MoneyReportViewProps) {
     const theme = useTheme();
     const styles = useThemeStyles();
     const StyleUtils = useStyleUtils();
@@ -70,6 +74,10 @@ function MoneyReportView({report, policyReportFields, shouldShowHorizontalRule, 
         [policyReportFields],
     );
     const isAdmin = ReportUtils.isPolicyAdmin(report.policyID ?? '', policies);
+
+    // console.log('MoneyReportView: shouldShowHorizontalRule', shouldShowHorizontalRule);
+    // console.log('MoneyReportView: shouldDisplayNewMarker', shouldDisplayNewMarker);
+
     return (
         <View style={[StyleUtils.getReportWelcomeContainerStyle(isSmallScreenWidth, true)]}>
             <AnimatedEmptyStateBackground />
@@ -167,10 +175,19 @@ function MoneyReportView({report, policyReportFields, shouldShowHorizontalRule, 
                         </View>
                     </>
                 )}
-                <SpacerView
-                    shouldShow={shouldShowHorizontalRule}
-                    style={[shouldShowHorizontalRule && styles.reportHorizontalRule]}
-                />
+                {shouldShowHorizontalRule ? (
+                    <SpacerView
+                        shouldShow={shouldShowHorizontalRule}
+                        style={[shouldShowHorizontalRule && styles.reportHorizontalRule]}
+                    />
+                ) : (
+                    replaceHorizontalRuleByNewMarker && (
+                        <UnreadActionIndicator
+                            reportActionID={report.reportID}
+                            shouldHideThreadDividerLine={!shouldShowHorizontalRule}
+                        />
+                    )
+                )}
             </View>
         </View>
     );
