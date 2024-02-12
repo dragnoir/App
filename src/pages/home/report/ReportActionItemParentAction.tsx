@@ -71,7 +71,7 @@ function ReportActionItemParentAction({report, index = 0, shouldHideThreadDivide
 
     return (
         <>
-            <View style={[StyleUtils.getReportWelcomeContainerStyle(isSmallScreenWidth), styles.justifyContentEnd]}>
+            <View style={[StyleUtils.getReportWelcomeContainerStyle(isSmallScreenWidth)]}>
                 <AnimatedEmptyStateBackground />
                 <View style={[styles.p5, StyleUtils.getReportWelcomeTopMarginStyle(isSmallScreenWidth)]} />
                 {allAncestors.map((ancestor) => (
