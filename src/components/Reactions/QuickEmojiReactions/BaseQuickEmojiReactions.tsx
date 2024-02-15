@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-console */
+import React, {useEffect, useRef} from 'react';
 import {View} from 'react-native';
 import {withOnyx} from 'react-native-onyx';
 import type {Emoji} from '@assets/emojis/types';
@@ -23,14 +24,29 @@ function BaseQuickEmojiReactions({
 }: BaseQuickEmojiReactionsProps) {
     const styles = useThemeStyles();
 
+    const firstEmojiRef = useRef<View | null>(null);
+
+    useEffect(() => {
+        // Set focus to the first emoji element
+        if (!firstEmojiRef.current) {
+            return;
+        }
+        console.log('firstEmojiRef.current', firstEmojiRef.current);
+        const buttonElement = firstEmojiRef.current.querySelector('button');
+        console.log('firstEmojiRef.current buttonElement', buttonElement);
+        if (buttonElement) {
+            buttonElement.focus();
+        }
+    }, []);
+
     return (
         <View style={styles.quickReactionsContainer}>
-            {CONST.QUICK_REACTIONS.map((emoji: Emoji) => (
+            {CONST.QUICK_REACTIONS.map((emoji: Emoji, index: number) => (
                 <Tooltip
                     text={`:${EmojiUtils.getLocalizedEmojiName(emoji.name, preferredLocale)}:`}
                     key={emoji.name}
                 >
-                    <View>
+                    <View ref={index === 0 ? firstEmojiRef : null}>
                         <EmojiReactionBubble
                             emojiCodes={[EmojiUtils.getPreferredEmojiCode(emoji, preferredSkinTone)]}
                             isContextMenu
