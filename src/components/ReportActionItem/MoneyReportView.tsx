@@ -8,6 +8,7 @@ import MenuItemWithTopDescription from '@components/MenuItemWithTopDescription';
 import OfflineWithFeedback from '@components/OfflineWithFeedback';
 import SpacerView from '@components/SpacerView';
 import Text from '@components/Text';
+import UnreadActionIndicator from '@components/UnreadActionIndicator';
 import useLocalize from '@hooks/useLocalize';
 import useStyleUtils from '@hooks/useStyleUtils';
 import useTheme from '@hooks/useTheme';
@@ -164,10 +165,17 @@ function MoneyReportView({report, policy, policyReportFields, shouldShowHorizont
                         </View>
                     </>
                 )}
-                <SpacerView
-                    shouldShow={shouldShowHorizontalRule}
-                    style={[shouldShowHorizontalRule && styles.reportHorizontalRule]}
-                />
+                {shouldShowHorizontalRule ? (
+                    <SpacerView
+                        shouldShow={shouldShowHorizontalRule}
+                        style={[shouldShowHorizontalRule && styles.reportHorizontalRule]}
+                    />
+                ) : (
+                    <UnreadActionIndicator
+                        reportActionID={report.reportID}
+                        shouldHideThreadDividerLine={!shouldShowHorizontalRule}
+                    />
+                )}
             </View>
         </View>
     );

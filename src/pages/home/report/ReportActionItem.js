@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, {memo, useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
@@ -124,6 +125,8 @@ const propTypes = {
 
     /** Callback to be called on onPress */
     onPress: PropTypes.func,
+
+    isFirstVisibleReportActionID: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -136,6 +139,7 @@ const defaultProps = {
     userWallet: {},
     parentReportActions: {},
     onPress: undefined,
+    isFirstVisibleReportActionID: false,
 };
 
 function ReportActionItem(props) {
@@ -747,7 +751,7 @@ function ReportActionItem(props) {
             >
                 {(hovered) => (
                     <View style={highlightedBackgroundColorIfNeeded}>
-                        {props.shouldDisplayNewMarker && <UnreadActionIndicator reportActionID={props.action.reportActionID} />}
+                        {props.shouldDisplayNewMarker && !props.isFirstVisibleReportActionID && <UnreadActionIndicator reportActionID={props.action.reportActionID} />}
                         <MiniReportActionContextMenu
                             reportID={props.report.reportID}
                             reportActionID={props.action.reportActionID}

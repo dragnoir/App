@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {useRoute} from '@react-navigation/native';
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -357,6 +358,11 @@ function ReportActionsList({
         [sortedReportActions, isOffline, currentUnreadMarker],
     );
 
+    const firstVisibleReportActionID = useMemo(
+        () => ReportActionsUtils.getFirstVisibleReportActionID(sortedReportActions, isOffline),
+        [sortedReportActions, isOffline],
+    );
+
     /**
      * Evaluate new unread marker visibility for each of the report actions.
      * @returns boolean
@@ -407,7 +413,7 @@ function ReportActionsList({
             setCurrentUnreadMarker(null);
         }
     }, [sortedVisibleReportActions, report.lastReadTime, report.reportID, messageManuallyMarkedUnread, shouldDisplayNewMarker, currentUnreadMarker]);
-
+    
     const renderItem = useCallback(
         ({item: reportAction, index}) => (
             <ReportActionsListItemRenderer
@@ -419,6 +425,7 @@ function ReportActionsList({
                 mostRecentIOUReportActionID={mostRecentIOUReportActionID}
                 shouldHideThreadDividerLine={shouldHideThreadDividerLine}
                 shouldDisplayNewMarker={shouldDisplayNewMarker(reportAction, index)}
+                isFirstVisibleReportActionID={firstVisibleReportActionID === reportAction.reportActionID}
             />
         ),
         [report, linkedReportActionID, sortedReportActions, mostRecentIOUReportActionID, shouldHideThreadDividerLine, shouldDisplayNewMarker],

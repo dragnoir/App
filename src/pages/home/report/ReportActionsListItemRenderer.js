@@ -33,9 +33,12 @@ const propTypes = {
 
     /** Linked report action ID */
     linkedReportActionID: PropTypes.string,
+
+    isFirstVisibleReportActionID: PropTypes.bool,
 };
 
 const defaultProps = {
+    isFirstVisibleReportActionID: false,
     mostRecentIOUReportActionID: '',
     linkedReportActionID: '',
 };
@@ -49,6 +52,7 @@ function ReportActionsListItemRenderer({
     shouldHideThreadDividerLine,
     shouldDisplayNewMarker,
     linkedReportActionID,
+    isFirstVisibleReportActionID
 }) {
     const shouldDisplayParentAction =
         reportAction.actionName === CONST.REPORT.ACTIONS.TYPE.CREATED &&
@@ -143,6 +147,7 @@ function ReportActionsListItemRenderer({
             }
             isMostRecentIOUReportAction={reportAction.reportActionID === mostRecentIOUReportActionID}
             index={index}
+            isFirstVisibleReportActionID={isFirstVisibleReportActionID}
         />
     );
 }
