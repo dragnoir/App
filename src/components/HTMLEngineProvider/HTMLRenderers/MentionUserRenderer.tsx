@@ -5,6 +5,7 @@ import type {TextStyle} from 'react-native';
 import type {CustomRendererProps, TPhrasing, TText} from 'react-native-render-html';
 import {TNodeChildrenRenderer} from 'react-native-render-html';
 import {usePersonalDetails} from '@components/OnyxProvider';
+import PressableWithoutFeedback from '@components/Pressable/PressableWithoutFeedback';
 import {ShowContextMenuContext, showContextMenuForReport} from '@components/ShowContextMenuContext';
 import Text from '@components/Text';
 import UserDetailsTooltip from '@components/UserDetailsTooltip';
@@ -60,15 +61,15 @@ function MentionUserRenderer({style, tnode, TDefaultRenderer, currentUserPersona
     return (
         <ShowContextMenuContext.Consumer>
             {({anchor, report, action, checkIfContextMenuActive}) => (
-                <Text
-                    suppressHighlighting
+                <PressableWithoutFeedback
                     onLongPress={(event) => showContextMenuForReport(event, anchor, report?.reportID ?? '', action, checkIfContextMenuActive, ReportUtils.isArchivedRoom(report))}
                     onPress={(event) => {
-                        event.preventDefault();
+                        event?.preventDefault();
                         Navigation.navigate(navigationRoute);
                     }}
                     role={CONST.ROLE.LINK}
                     accessibilityLabel={`/${navigationRoute}`}
+                    style={[StyleUtils.getMentionStyle(isOurMention)]}
                 >
                     <UserDetailsTooltip
                         accountID={accountID}
@@ -79,15 +80,16 @@ function MentionUserRenderer({style, tnode, TDefaultRenderer, currentUserPersona
                         <Text
                             // eslint-disable-next-line react/jsx-props-no-spreading
                             {...defaultRendererProps}
-                            style={[styles.link, styleWithoutColor, StyleUtils.getMentionStyle(isOurMention), {color: StyleUtils.getMentionTextColor(isOurMention)}]}
+                            style={[styles.link, styleWithoutColor, {color: StyleUtils.getMentionTextColor(isOurMention)}]}
                             role={CONST.ROLE.LINK}
                             testID="span"
                             href={`/${navigationRoute}`}
+                            suppressHighlighting
                         >
                             {htmlAttribAccountID ? `@${displayNameOrLogin}` : <TNodeChildrenRenderer tnode={tnode} />}
                         </Text>
                     </UserDetailsTooltip>
-                </Text>
+                </PressableWithoutFeedback>
             )}
         </ShowContextMenuContext.Consumer>
     );
