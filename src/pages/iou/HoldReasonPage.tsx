@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type {RouteProp} from '@react-navigation/native';
 import React, {useCallback} from 'react';
 import {View} from 'react-native';
@@ -39,6 +40,7 @@ function HoldReasonPage({route}: HoldReasonPageProps) {
 
     const {transactionID, reportID, backTo} = route.params;
 
+    console.log('backTo', backTo);
     const navigateBack = () => {
         Navigation.navigate(backTo);
     };

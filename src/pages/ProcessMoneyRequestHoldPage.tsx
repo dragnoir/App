@@ -1,4 +1,6 @@
-import React, {useCallback, useMemo} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import type {RefObject} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {View} from 'react-native';
 import Button from '@components/Button';
 import HeaderPageLayout from '@components/HeaderPageLayout';
@@ -13,11 +15,21 @@ import * as IOU from '@userActions/IOU';
 function ProcessMoneyRequestHoldPage() {
     const styles = useThemeStyles();
     const {translate} = useLocalize();
+    const submitBtn = useRef<View>(null);
 
     const onConfirm = useCallback(() => {
         IOU.setShownHoldUseExplanation();
         Navigation.goBack();
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!submitBtn.current) {
+                return;
+            }
+            submitBtn.current.focus();
+        }, []),
+    );
 
     const footerComponent = useMemo(
         () => (
@@ -25,6 +37,7 @@ function ProcessMoneyRequestHoldPage() {
                 success
                 text={translate('common.buttonConfirm')}
                 onPress={onConfirm}
+                ref={submitBtn}
             />
         ),
         [onConfirm, translate],
