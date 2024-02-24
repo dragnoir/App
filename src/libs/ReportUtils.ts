@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import ExpensiMark from 'expensify-common/lib/ExpensiMark';
 import Str from 'expensify-common/lib/str';
 import {isEmpty} from 'lodash';
@@ -2639,10 +2640,12 @@ function getChatRoomSubtitle(report: OnyxEntry<Report>): string | undefined {
 function getParentNavigationSubtitle(report: OnyxEntry<Report>): ParentNavigationSummaryParams {
     if (isThread(report)) {
         const parentReport = allReports?.[`${ONYXKEYS.COLLECTION.REPORT}${report?.parentReportID}`] ?? null;
-        const {rootReportName, workspaceName} = getRootReportAndWorkspaceName(parentReport);
-        if (!rootReportName) {
+        const parentReportName = getReportName(parentReport);
+        if (!parentReportName) {
             return {};
         }
+        const {workspaceName} = getRootReportAndWorkspaceName(parentReport);
+        const rootReportName = parentReportName;
 
         return {rootReportName, workspaceName};
     }
