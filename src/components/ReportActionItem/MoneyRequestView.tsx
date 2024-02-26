@@ -9,6 +9,7 @@ import ReceiptEmptyState from '@components/ReceiptEmptyState';
 import SpacerView from '@components/SpacerView';
 import Switch from '@components/Switch';
 import Text from '@components/Text';
+import UnreadActionIndicator from '@components/UnreadActionIndicator';
 import ViolationMessages from '@components/ViolationMessages';
 import useLocalize from '@hooks/useLocalize';
 import usePermissions from '@hooks/usePermissions';
@@ -432,10 +433,17 @@ function MoneyRequestView({
                     </View>
                 )}
             </View>
-            <SpacerView
-                shouldShow={shouldShowHorizontalRule}
-                style={[shouldShowHorizontalRule ? styles.reportHorizontalRule : {}]}
-            />
+            {shouldShowHorizontalRule ? (
+                <SpacerView
+                    shouldShow={shouldShowHorizontalRule}
+                    style={[shouldShowHorizontalRule && styles.reportHorizontalRule]}
+                />
+            ) : (
+                <UnreadActionIndicator
+                    reportActionID={report.reportID}
+                    shouldHideThreadDividerLine={!shouldShowHorizontalRule}
+                />
+            )}
         </View>
     );
 }

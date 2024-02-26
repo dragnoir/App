@@ -13,6 +13,7 @@ import {usePersonalDetails} from '@components/OnyxProvider';
 import PressableWithSecondaryInteraction from '@components/PressableWithSecondaryInteraction';
 import SpacerView from '@components/SpacerView';
 import Text from '@components/Text';
+import UnreadActionIndicator from '@components/UnreadActionIndicator';
 import withCurrentUserPersonalDetails from '@components/withCurrentUserPersonalDetails';
 import type {WithCurrentUserPersonalDetailsProps} from '@components/withCurrentUserPersonalDetails';
 import useLocalize from '@hooks/useLocalize';
@@ -182,10 +183,17 @@ function TaskView({report, shouldShowHorizontalRule, ...props}: TaskViewProps) {
                     )}
                 </OfflineWithFeedback>
             </OfflineWithFeedback>
-            <SpacerView
-                shouldShow={shouldShowHorizontalRule}
-                style={shouldShowHorizontalRule && styles.reportHorizontalRule}
-            />
+            {shouldShowHorizontalRule ? (
+                <SpacerView
+                    shouldShow={shouldShowHorizontalRule}
+                    style={[shouldShowHorizontalRule && styles.reportHorizontalRule]}
+                />
+            ) : (
+                <UnreadActionIndicator
+                    reportActionID={report.reportID}
+                    shouldHideThreadDividerLine={!shouldShowHorizontalRule}
+                />
+            )}
         </View>
     );
 }
