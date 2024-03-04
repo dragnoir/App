@@ -4088,16 +4088,32 @@ const styles = (theme: ThemeColors) =>
 
         reportActionItemImagesMoreContainer: {
             position: 'absolute',
-            bottom: 0,
-            right: 0,
+            bottom: 111,
+            right: 4,
             display: 'flex',
+            width: 40,
+            height: 40,
+
+            // overflow: 'hidden',
         },
 
         reportActionItemImagesMore: {
             borderTopLeftRadius: 12,
-            backgroundColor: theme.border,
+            borderBottomRightRadius: 12,
             width: 40,
             height: 40,
+        },
+
+        triangleBottomRight: {
+            width: 0,
+            height: 0,
+            borderBottomColor: 'yellow',
+            borderBottomWidth: 40,
+            borderBottomStyle: 'solid',
+            borderLeftColor: 'transparent',
+            borderLeftWidth: 40,
+            borderLeftStyle: 'solid',
+            position: 'absolute',
         },
 
         reportActionItemImagesMoreHovered: {
