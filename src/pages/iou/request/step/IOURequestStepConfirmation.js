@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
@@ -24,6 +25,7 @@ import * as IOUUtils from '@libs/IOUUtils';
 import Log from '@libs/Log';
 import Navigation from '@libs/Navigation/Navigation';
 import * as OptionsListUtils from '@libs/OptionsListUtils';
+import * as OptionsListUtil2 from '@libs/OptionsListUtils2';
 import * as ReportUtils from '@libs/ReportUtils';
 import * as TransactionUtils from '@libs/TransactionUtils';
 import personalDetailsPropType from '@pages/personalDetailsPropType';
@@ -85,6 +87,15 @@ function IOURequestStepConfirmation({
     },
     transaction,
 }) {
+
+    const reportFromReportUtils = ReportUtils.getReport(reportID);
+    console.log('reportFromReportUtils: ', reportFromReportUtils);
+    const reportFromOptionsListUtils = OptionsListUtils.getReportOption(reportID);
+    console.log('reportFromOptionsListUtils: ', reportFromOptionsListUtils);
+    const reportFromOptionsListUtils2 = OptionsListUtil2.getReportOption(reportID);
+    console.log('reportFromOptionsListUtils 2: ', reportFromOptionsListUtils2);
+    
+
     const styles = useThemeStyles();
     const {translate} = useLocalize();
     const {windowWidth} = useWindowDimensions();
