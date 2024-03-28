@@ -1,9 +1,10 @@
+/* eslint-disable no-restricted-imports */
 import {useFocusEffect} from '@react-navigation/native';
 import lodashGet from 'lodash/get';
 import lodashIsEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, {useCallback, useRef} from 'react';
-import {View} from 'react-native';
+import {View, Pressable, Text} from 'react-native';
 import {withOnyx} from 'react-native-onyx';
 import categoryPropTypes from '@components/categoryPropTypes';
 import FormProvider from '@components/Form/FormProvider';
@@ -209,6 +210,11 @@ function IOURequestStepDescription({
                     />
                 </View>
             </FormProvider>
+            <View>
+                        <Pressable accessibilityRole="button" onPress={navigateBack}>
+                            <Text>Native Pressable</Text>
+                        </Pressable>
+                    </View>
         </StepScreenWrapper>
     );
 }
