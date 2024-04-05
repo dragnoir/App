@@ -1261,6 +1261,7 @@ function getTaxRatesOptions(taxRates: Array<Partial<TaxRate>>): TaxRatesOption[]
         tooltipText: taxRate.modifiedName,
         isDisabled: taxRate.isDisabled,
         data: taxRate,
+        isSelected: taxRate.isSelected,
     }));
 }
 
@@ -1327,6 +1328,7 @@ function getTaxRatesSection(taxRates: TaxRatesWithDefault | undefined, selectedO
             return {
                 modifiedName: option.name,
                 isDisabled: !!taxRateObject?.isDisabled,
+                isSelected: option.isSelected,
             };
         });
 
@@ -1344,7 +1346,6 @@ function getTaxRatesSection(taxRates: TaxRatesWithDefault | undefined, selectedO
         shouldShow: true,
         data: getTaxRatesOptions(filteredTaxRates),
     });
-
     return policyRatesSections;
 }
 

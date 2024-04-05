@@ -56,6 +56,7 @@ function TaxPicker({selectedTaxRate = '', policy, insets, onSubmit}: TaxPickerPr
                 name: selectedTaxRate,
                 enabled: true,
                 accountID: null,
+                isSelected: true,
             },
         ];
     }, [selectedTaxRate]);
