@@ -19,40 +19,23 @@ function ChatDetailsQuickActionsBar({report}: ChatDetailsQuickActionsBarProps) {
     const isPinned = !!report.isPinned;
     return (
         <View style={[styles.flexRow, styles.ph5, styles.mb5]}>
-            <View style={[styles.flex1, styles.pr3]}>
-                <ConfirmModal
-                    danger
-                    title={translate('groupChat.lastMemberTitle')}
-                    isVisible={isLastMemberLeavingGroupModalVisible}
-                    onConfirm={() => {
-                        setIsLastMemberLeavingGroupModalVisible(false);
-                        Report.leaveGroupChat(report.reportID);
-                    }}
-                    onCancel={() => setIsLastMemberLeavingGroupModalVisible(false)}
-                    prompt={translate('groupChat.lastMemberWarning')}
-                    confirmText={translate('common.leave')}
-                    cancelText={translate('common.cancel')}
-                />
-                <Button
-                    onPress={() => {
-                        if (Object.keys(report?.participants ?? {}).length === 1) {
-                            setIsLastMemberLeavingGroupModalVisible(true);
-                            return;
-                        }
-
-                        Report.leaveGroupChat(report.reportID);
-                    }}
-                    icon={Expensicons.Exit}
-                    style={styles.flex1}
-                    text={translate('common.leave')}
-                />
-            </View>
             <View style={[styles.flex1]}>
                 <Button
                     onPress={() => Report.togglePinnedState(report.reportID, isPinned)}
                     icon={Expensicons.Pin}
                     style={styles.flex1}
                     text={isPinned ? translate('common.unPin') : translate('common.pin')}
+                />
+            </View>
+
+            <View style={[styles.flex1, styles.pl3]}>
+                <Button
+                    onPress={() => {
+                        // Navigation.navigate(ROUTES.REPORT_WITH_ID_DETAILS_SHARE_CODE.getRoute(report?.reportID ?? ''));
+                    }}
+                    icon={Expensicons.QrCode}
+                    style={styles.flex1}
+                    text={translate('common.share')}
                 />
             </View>
         </View>
