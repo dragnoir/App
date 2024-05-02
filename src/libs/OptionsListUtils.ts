@@ -679,6 +679,7 @@ function createOption(
         result.isMoneyRequestReport = ReportUtils.isMoneyRequestReport(report);
         result.isThread = ReportUtils.isChatThread(report);
         result.isTaskReport = ReportUtils.isTaskReport(report);
+        result.isGroupChat = ReportUtils.isGroupChat(report);
         result.shouldShowSubscript = ReportUtils.shouldReportShowSubscript(report);
         result.isPolicyExpenseChat = ReportUtils.isPolicyExpenseChat(report);
         result.isOwnPolicyExpenseChat = report.isOwnPolicyExpenseChat ?? false;
@@ -1686,6 +1687,7 @@ function getOptions(
         const isPolicyExpenseChat = option.isPolicyExpenseChat;
         const isMoneyRequestReport = option.isMoneyRequestReport;
         const isSelfDM = option.isSelfDM;
+        const isGroupChat = option.isGroupChat;
         let accountIDs = [];
 
         if (isSelfDM) {
@@ -1762,6 +1764,7 @@ function getOptions(
 
     if (includeRecentReports) {
         for (const reportOption of allReportOptions) {
+            console.log('reportOption: ', reportOption);
             /**
              * By default, generated options does not have the chat preview line enabled.
              * If showChatPreviewLine or forcePolicyNamePreview are true, let's generate and overwrite the alternate text.
@@ -1782,7 +1785,15 @@ function getOptions(
                 reportOption.isPolicyExpenseChat && reportOption.ownerAccountID === currentUserAccountID && includeOwnedWorkspaceChats && !reportOption.isArchivedRoom;
 
             // Skip if we aren't including multiple participant reports and this report has multiple participants
+            const hasMultipleParticipants = reportOption.participantsList?.length > 1;
+            const isSingleUserGroupChat = reportOption.isGroupChat && !hasMultipleParticipants;
+
+            if (isSingleUserGroupChat) {
+                continue;
+            }
+
             if (!isCurrentUserOwnedPolicyExpenseChatThatCouldShow && !includeMultipleParticipantReports && !reportOption.login) {
+                console.log('passed here!');
                 continue;
             }
 
